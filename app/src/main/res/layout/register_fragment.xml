@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="captchaData"
+            type="com.ltz.mymvp.data.remote.CaptchaData" />
+
+        <variable
+            name="registerData"
+            type="com.ltz.mymvp.data.local.RegisterData" />
+
+        <variable
+            name="listener"
+            type="com.ltz.mymvp.base.baseinterface.OnClickListener" />
+
+        <variable
+            name="presenter"
+            type="com.ltz.mymvp.feature.register.RegisterPresenter" />
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/phoneNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:drawableLeft="@drawable/ic_user"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:hint="@string/register_phone_number"
+            android:inputType="phone"
+            android:text="@={registerData.mobile}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/captcha"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@+id/iv_captcha"
+            android:layout_toStartOf="@id/iv_captcha"
+            android:afterTextChanged="@{presenter::afterTextChanged}"
+            android:hint="@string/captcha_code"
+            android:maxLength="4"
+            android:singleLine="true"
+            android:text="@={captchaData.verify_code}"
+            app:layout_constraintEnd_toStartOf="@+id/iv_captcha"
+            app:layout_constraintStart_toStartOf="@+id/phoneNumber"
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
+
+        <ImageView
+            android:id="@+id/iv_captcha"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/captcha_holder"
+            android:onClick="@{listener::onClick}"
+            android:scaleType="fitXY"
+            app:imageUrl="@{captchaData.img_url}"
+            app:layout_constraintBottom_toBottomOf="@+id/captcha"
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumber" />
+
+
+        <EditText
+            android:id="@+id/messageCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_message"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:hint="@string/message_captcha"
+            android:inputType="number"
+            android:text="@={registerData.messageCode}"
+            app:layout_constraintEnd_toEndOf="@+id/iv_captcha"
+            app:layout_constraintStart_toStartOf="@+id/captcha"
+            app:layout_constraintTop_toBottomOf="@+id/captcha" />
+
+        <Button
+            android:id="@+id/coutdown_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:clickable="@{registerData.clickAble.get()}"
+            android:onClick="@{listener::onClick}"
+            android:text="@={registerData.countDownText}"
+            android:textSize="12sp"
+            android:visibility="@{TextUtils.isEmpty(registerData.countDownText.get())?view.GONE:view.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/messageCode"
+            app:layout_constraintEnd_toEndOf="@+id/messageCode"
+            app:layout_constraintTop_toTopOf="@+id/messageCode" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:text="@={registerData.passWord}"
+            app:layout_constraintEnd_toEndOf="@+id/messageCode"
+            app:layout_constraintStart_toStartOf="@+id/messageCode"
+            app:layout_constraintTop_toBottomOf="@+id/messageCode" />
+
+
+        <Button
+            android:id="@+id/register_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableRight="@drawable/ic_send"
+            android:onClick="@{listener::onClick}"
+            android:paddingLeft="35dp"
+            android:text="@string/register_text"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="@+id/password"
+            app:layout_constraintStart_toStartOf="@+id/password"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+
+        <TextView
+            android:id="@+id/do_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:onClick="@{listener::onClick}"
+            android:padding="8dp"
+            android:text="@string/go_login"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/register_btn"
+            app:layout_constraintStart_toStartOf="@+id/register_btn"
+            app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
